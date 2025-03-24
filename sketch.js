@@ -6,7 +6,7 @@ let keys = {};
 let score1 = 0;
 let score2 = 0;
 let gameOver = false;
-let winningScore = 2;
+let winningScore = 10;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
@@ -109,8 +109,8 @@ function resetBall() {
   ball = {
     x: width / 2,
     y: height / 2,
-    vx: random([-3, 3]),
-    vy: random(-2, 2),
+    vx: random([-5, 5]),
+    vy: random(-3, 3),
     radius: 35,
     color: random(colors)
   };
