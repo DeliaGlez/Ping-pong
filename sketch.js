@@ -3,35 +3,28 @@
 //Ping-pong
 let ball;
 let colors = ["white"];
-
-let paddle1 = {
-  x: 20,
-  y: 150,
-  w: 15,
-  h: 80,
-  speed: 5
-};
-
-let paddle2 = {
-  x: 365,
-  y: 150,
-  w: 15,
-  h: 80,
-  speed: 5
-};
-
 let keys = {};
 
 function setup() {
-  createCanvas(400, 400);
-  ball = {
-    x: width / 2,
-    y: height / 2,
-    vx: random([-3, 3]),
-    vy: random(-2, 2),
-    radius: 15,
-    color: random(colors)
+  createCanvas(windowWidth, windowHeight);
+  paddle1 = {
+    x: 20,
+    y: height / 2 - 50,
+    w: 50,
+    h: 200,
+    speed: 15
   };
+  
+  paddle2 = {
+    x: width - 70,
+    y: height / 2 - 50,
+    w: 50,
+    h: 200,
+    speed: 15
+  };
+  
+  resetBall();
+
 }
 
 function draw() {
@@ -65,6 +58,10 @@ function draw() {
     ball.x = paddle2.x - ball.radius;
   }
 
+  if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= width) {
+    resetBall();
+  }
+
   if (keys["w"] && paddle1.y > 0) paddle1.y -= paddle1.speed;
   if (keys["s"] && paddle1.y + paddle1.h < height) paddle1.y += paddle1.speed;
 
@@ -78,4 +75,18 @@ function keyPressed() {
 
 function keyReleased() {
   keys[key] = false;
+}
+function windowResized() {
+  setup();
+}
+
+function resetBall() {
+  ball = {
+    x: width / 2,
+    y: height / 2,
+    vx: random([-3, 3]),
+    vy: random(-2, 2),
+    radius: 35,
+    color: random(colors)
+  };
 }
