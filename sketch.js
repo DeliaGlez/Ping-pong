@@ -1,12 +1,22 @@
-
 //Hecho por Christian Rodriguez Moreno y Alma Delia Vargas Gonzalez
 //Ping-pong
 let ball;
 let colors = ["white"];
 let keys = {};
+let score1 = 0;
+let score2 = 0;
+let gameOver = false;
+let winningScore = 10;
+let retryButton;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
+
+  retryButton = createButton("Reintentar");
+  retryButton.position(width / 2 - 50, height / 2 + 60);
+  retryButton.mousePressed(restartGame);
+  retryButton.hide();
+
   paddle1 = {
     x: 20,
     y: height / 2 - 50,
@@ -24,11 +34,25 @@ function setup() {
   };
   
   resetBall();
-
 }
 
 function draw() {
   background("black");
+
+  textSize(32);
+  fill("white");
+  textAlign(CENTER, TOP);
+  text(`${score1} - ${score2}`, width / 2, 20);
+
+  if (gameOver) {
+    textSize(64);
+    textAlign(CENTER, CENTER);
+    text(score1 === winningScore ? "¡Jugador 1 gana!" : "¡Jugador 2 gana!", width / 2, height / 2);
+    retryButton.show();
+    return;
+  }
+
+  retryButton.hide();
 
   fill("white");
   rect(paddle1.x, paddle1.y, paddle1.w, paddle1.h);
@@ -58,7 +82,15 @@ function draw() {
     ball.x = paddle2.x - ball.radius;
   }
 
-  if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= width) {
+  if (ball.x - ball.radius <= 0) {
+    score2++;
+    checkGameOver();
+    resetBall();
+  }
+
+  if (ball.x + ball.radius >= width) {
+    score1++;
+    checkGameOver();
     resetBall();
   }
 
@@ -76,6 +108,7 @@ function keyPressed() {
 function keyReleased() {
   keys[key] = false;
 }
+
 function windowResized() {
   setup();
 }
@@ -89,4 +122,21 @@ function resetBall() {
     radius: 35,
     color: random(colors)
   };
+}
+
+function checkGameOver() {
+  if (score1 === winningScore || score2 === winningScore) {
+    gameOver = true;
+    setTimeout(() => {
+      restartGame();
+    }, 3000);
+  }
+}
+
+function restartGame() {
+  score1 = 0;
+  score2 = 0;
+  gameOver = false;
+  resetBall();
+  retryButton.hide();
 }
