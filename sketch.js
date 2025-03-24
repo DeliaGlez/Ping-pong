@@ -6,16 +6,10 @@ let keys = {};
 let score1 = 0;
 let score2 = 0;
 let gameOver = false;
-let winningScore = 10;
-let retryButton;
+let winningScore = 2;
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-
-  retryButton = createButton("Reintentar");
-  retryButton.position(width / 2 - 50, height / 2 + 60);
-  retryButton.mousePressed(restartGame);
-  retryButton.hide();
 
   paddle1 = {
     x: 20,
@@ -48,11 +42,9 @@ function draw() {
     textSize(64);
     textAlign(CENTER, CENTER);
     text(score1 === winningScore ? "¡Jugador 1 gana!" : "¡Jugador 2 gana!", width / 2, height / 2);
-    retryButton.show();
     return;
   }
 
-  retryButton.hide();
 
   fill("white");
   rect(paddle1.x, paddle1.y, paddle1.w, paddle1.h);
@@ -71,14 +63,14 @@ function draw() {
   if (ball.x - ball.radius < paddle1.x + paddle1.w &&
       ball.y > paddle1.y &&
       ball.y < paddle1.y + paddle1.h) {
-    ball.vx *= -1;
+    ball.vx *= -1.1;
     ball.x = paddle1.x + paddle1.w + ball.radius;
   }
 
   if (ball.x + ball.radius > paddle2.x &&
       ball.y > paddle2.y &&
       ball.y < paddle2.y + paddle2.h) {
-    ball.vx *= -1;
+    ball.vx *= -1.1;
     ball.x = paddle2.x - ball.radius;
   }
 
@@ -138,5 +130,4 @@ function restartGame() {
   score2 = 0;
   gameOver = false;
   resetBall();
-  retryButton.hide();
 }
